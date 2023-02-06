@@ -14,28 +14,32 @@ Output: 9
 
 class Solution {
     public int longestConsecutive(int[] nums) {
-        if(nums == null || nums.length == 0) return 0;
-        int len = nums.length;
-        HashMap<Integer, Integer> map = new HashMap<>();
-        for(int n : nums){
-            if(!map.containsKey(n)){
-                map.put(n, map.containsKey(n - 1) ? n - 1 : n);
-                if(map.containsKey(n + 1))
-                    map.put(n + 1, n);
+        if (nums.length == 0) {
+            return 0;
+        }
+        
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            set.add(num);
+        }
+        
+        int longest = 0;
+        for (int num : set) {
+            if (!set.contains(num - 1)) {
+                int currentNum = num;
+                int currentLength = 1;
+                
+                while (set.contains(currentNum + 1)) {
+                    currentNum += 1;
+                    currentLength += 1;
+                }
+                
+                longest = Math.max(longest, currentLength);
             }
         }
-        int result = 0;
-        int count = 1;
-        for(Integer i : map.keySet()){
-            int num = i;
-            while(map.get(num) != num){
-                num = map.get(num);
-                count++;
-            }
-            result = Math.max(result, count);
-            count = 1;
-        }
-        return result;
+        
+        return longest;
     }
 }
+
 
